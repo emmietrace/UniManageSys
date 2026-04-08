@@ -1,0 +1,73 @@
+﻿@model UniManageSys.ViewModels.LecturerClassesViewModel
+
+@{
+    ViewData["Title"] = "My Classes";
+}
+
+<div class="d-flex justify-content-between align-items-end mb-4 mt-3">
+    <div>
+        <h2 class="fw-bold mb-1" style="color: var(--brand-navy);">My Classes</h2>
+        @if (Model.ActiveSemester != null)
+        {
+            <p class="text-muted mb-0" style="font-size: 0.95rem;">@Model.ActiveSemester.AcademicYear?.Name - @Model.ActiveSemester.Name</p>
+        }
+    </div>
+</div>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-warning shadow-sm" style="border-radius: 8px;">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i> @TempData["ErrorMessage"]
+    </div>
+}
+
+@if (Model.ActiveSemester != null)
+{
+    @if (!Model.AssignedCourses.Any())
+    {
+        <div class="text-center mt-5 p-5 card border-0 shadow-sm" style="border-radius: 16px;">
+            <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
+            <h4 class="mt-3 fw-bold" style="color: var(--brand-navy);">No Classes Assigned</h4>
+            <p class="text-muted">You have not been assigned any courses for the current semester. Please contact your HOD.</p>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4 mb-5">
+            @foreach (var assignment in Model.AssignedCourses)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card border-0 shadow-sm h-100 class-card" style="border-radius: 16px; transition: transform 0.2s; background-color: var(--card-bg);">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <span class="badge" style="background-color: rgba(30, 64, 175, 0.1); color: var(--brand-navy); font-size: 0.85rem; padding: 0.5em 0.8em;">
+                                    @assignment.Course?.Code
+                                </span>
+                                @if (assignment.IsPrimaryLecturer)
+                                {
+                                    <span class="text-success" style="font-size: 0.8rem;" title="Primary Lecturer"><i class="bi bi-star-fill"></i> Primary</span>
+                                }
+                            </div>
+                            
+                            <h5 class="fw-bold mb-2" style="color: var(--brand-navy);">@assignment.Course?.Title</h5>
+                            <p class="text-muted mb-4" style="font-size: 0.85rem;"><i class="bi bi-journal-text me-1"></i> @assignment.Course?.CreditUnits Units</p>
+                            
+                            <hr style="border-color: #E2E8F0;">
+                            
+                            <a asp-action="Roster" asp-route-id="@assignment.Id" class="btn w-100 shadow-sm mt-2" style="background-color: var(--brand-navy); color: white; border-radius: 8px;">
+                                <i class="bi bi-people-fill me-2"></i> View Students
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+}
+
+<style>
+    .class-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08) !important;
+    }
+</style>

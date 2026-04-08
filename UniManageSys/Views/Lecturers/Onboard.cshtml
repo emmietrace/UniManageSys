@@ -1,0 +1,91 @@
+﻿@model UniManageSys.ViewModels.LecturerOnboardViewModel
+@using UniManageSys.Enums
+
+@{
+    ViewData["Title"] = "Onboard Faculty";
+}
+
+<div class="row justify-content-center mt-3 mb-5">
+    <div class="col-lg-8">
+        
+        <div class="d-flex justify-content-between align-items-end mb-4">
+            <div>
+                <h2 class="fw-bold mb-1" style="color: var(--brand-navy);">Onboard New Faculty</h2>
+                <p class="text-muted mb-0" style="font-size: 0.95rem;">Create a staff account and academic profile.</p>
+            </div>
+            <a asp-action="Index" class="btn btn-outline-secondary px-3"><i class="bi bi-arrow-left me-1"></i> Staff Directory</a>
+        </div>
+
+        <div class="card border-0 shadow-sm p-4 p-md-5" style="border-radius: 16px; background-color: var(--card-bg);">
+            <form asp-action="Onboard" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-4" style="border-radius: 8px;"></div>
+                
+                <h5 class="fw-bold mb-4" style="color: var(--brand-navy); border-bottom: 2px solid #F1F5F9; padding-bottom: 0.5rem;">Personal Information</h5>
+
+                <div class="row g-4 mb-4">
+                    <div class="col-md-6">
+                        <label asp-for="FirstName" class="form-label fw-semibold text-muted" style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">First Name</label>
+                        <input asp-for="FirstName" class="form-control form-control-lg" placeholder="e.g. David" style="border-radius: 8px; border: 1px solid #E2E8F0;" />
+                        <span asp-validation-for="FirstName" class="text-danger" style="font-size: 0.85rem;"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="LastName" class="form-label fw-semibold text-muted" style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">Last Name</label>
+                        <input asp-for="LastName" class="form-control form-control-lg" placeholder="e.g. Ojo" style="border-radius: 8px; border: 1px solid #E2E8F0;" />
+                        <span asp-validation-for="LastName" class="text-danger" style="font-size: 0.85rem;"></span>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label asp-for="Email" class="form-label fw-semibold text-muted" style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">University Email</label>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text bg-light border-end-0" style="border: 1px solid #E2E8F0; border-radius: 8px 0 0 8px;"><i class="bi bi-envelope text-muted"></i></span>
+                            <input asp-for="Email" class="form-control border-start-0" placeholder="david.ojo@unisystem.edu" style="border-radius: 0 8px 8px 0; border: 1px solid #E2E8F0;" />
+                        </div>
+                        <span asp-validation-for="Email" class="text-danger" style="font-size: 0.85rem;"></span>
+                    </div>
+                </div>
+
+                <h5 class="fw-bold mb-4 mt-5" style="color: var(--brand-navy); border-bottom: 2px solid #F1F5F9; padding-bottom: 0.5rem;">Employment Details</h5>
+
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <label asp-for="StaffId" class="form-label fw-semibold text-muted" style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">Staff ID</label>
+                        <input asp-for="StaffId" class="form-control form-control-lg" placeholder="CUSTAFF-001" style="border-radius: 8px; border: 1px solid #E2E8F0; background-color: #F8FAFC;" />
+                        <span asp-validation-for="StaffId" class="text-danger" style="font-size: 0.85rem;"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="Rank" class="form-label fw-semibold text-muted" style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">Academic Rank</label>
+                        <select asp-for="Rank" asp-items="Html.GetEnumSelectList<AcademicRank>()" class="form-select form-select-lg" style="border-radius: 8px; border: 1px solid #E2E8F0;">
+                            <option value="">-- Select Rank --</option>
+                        </select>
+                        <span asp-validation-for="Rank" class="text-danger" style="font-size: 0.85rem;"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="DepartmentId" class="form-label fw-semibold text-muted" style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">Department</label>
+                        <select asp-for="DepartmentId" class="form-select form-select-lg" asp-items="ViewBag.DepartmentId" style="border-radius: 8px; border: 1px solid #E2E8F0;">
+                            <option value="">-- Select Dept --</option>
+                        </select>
+                        <span asp-validation-for="DepartmentId" class="text-danger" style="font-size: 0.85rem;"></span>
+                    </div>
+                </div>
+
+                <hr class="my-5" style="border-color: #E2E8F0;">
+
+                <div class="d-flex justify-content-end gap-3">
+                    <a asp-action="Index" class="btn btn-light btn-lg px-4" style="border-radius: 8px; font-weight: 500;">Cancel</a>
+                    <button type="submit" class="btn btn-lg px-5 shadow-sm" style="background-color: var(--brand-navy); color: white; border-radius: 8px; font-weight: 600;">
+                        <i class="bi bi-person-badge-fill me-2"></i> Onboard Faculty
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

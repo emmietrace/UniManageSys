@@ -1,0 +1,139 @@
+﻿@model UniManageSys.ViewModels.LecturerWorkloadViewModel
+@using System.Text.RegularExpressions
+
+@{
+    ViewData["Title"] = "Workload Assignment";
+    string FormatRank(string rank) => Regex.Replace(rank, "([a-z])([A-Z])", "$1 $2");
+
+    // Filter assignments to only show the active semester
+    var currentAssignments = Model.LecturerProfile.CourseAssignments
+        .Where(ca => ca.SemesterId == Model.ActiveSemester.Id)
+        .ToList();
+}
+
+<div class="d-flex justify-content-between align-items-end mb-4 mt-3">
+    <div>
+        <h2 class="fw-bold mb-1" style="color: var(--brand-navy);">Workload Assignment</h2>
+        <p class="text-muted mb-0" style="font-size: 0.95rem;">@Model.ActiveSemester.AcademicYear?.Name - @Model.ActiveSemester.Name</p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary px-3"><i class="bi bi-arrow-left me-1"></i> Staff Directory</a>
+</div>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible shadow-sm" style="border-radius: 8px;">
+        <i class="bi bi-exclamation-octagon-fill me-2"></i> @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible shadow-sm" style="border-radius: 8px; border-left: 5px solid #10B981;">
+        <i class="bi bi-check-circle-fill me-2"></i> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="row g-4 mb-5">
+    
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm p-4 mb-4 text-center" style="border-radius: 16px; background-color: var(--card-bg);">
+            <div class="avatar-circle shadow-sm mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem; background-color: var(--brand-navy); color: white;">
+                @(Model.LecturerProfile.User?.FirstName?.Substring(0, 1))@(Model.LecturerProfile.User?.LastName?.Substring(0, 1))
+            </div>
+            <h5 class="fw-bold mb-1" style="color: var(--brand-navy);">@Model.LecturerProfile.User?.FullName</h5>
+            <p class="text-muted mb-2" style="font-size: 0.9rem;">@Model.LecturerProfile.StaffId</p>
+            <span class="badge" style="background-color: rgba(245, 158, 11, 0.1); color: #B45309;">
+                @FormatRank(Model.LecturerProfile.Rank.ToString())
+            </span>
+            <hr class="my-3 text-muted">
+            <div class="text-start text-muted" style="font-size: 0.85rem;">
+                <i class="bi bi-building me-2"></i> @Model.LecturerProfile.Department?.Name
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm p-4" style="border-radius: 16px; background-color: var(--card-bg);">
+            <h6 class="fw-bold mb-3" style="color: var(--brand-navy);">Assign Course</h6>
+            <form asp-action="AssignCourse" method="post">
+                <input type="hidden" name="lecturerId" value="@Model.LecturerProfile.Id" />
+                <input type="hidden" name="semesterId" value="@Model.ActiveSemester.Id" />
+                
+                <div class="mb-3">
+                    <label class="form-label text-muted" style="font-size: 0.85rem; text-transform: uppercase;">Select Course</label>
+                    <select name="selectedCourseId" class="form-select form-select-lg" asp-items="Model.AvailableCourses" required style="border-radius: 8px;">
+                        <option value="">-- Choose --</option>
+                    </select>
+                </div>
+
+                <div class="form-check form-switch mb-4">
+                    <input class="form-check-input" type="checkbox" name="isPrimaryLecturer" value="true" checked id="primarySwitch">
+                    <label class="form-check-label text-muted" for="primarySwitch" style="font-size: 0.9rem;">Primary Lecturer</label>
+                </div>
+
+                <button type="submit" class="btn w-100 shadow-sm" style="background-color: var(--brand-navy); color: white; border-radius: 8px;">
+                    <i class="bi bi-plus-circle me-1"></i> Add to Workload
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm p-4 h-100" style="border-radius: 16px; background-color: var(--card-bg);">
+            <h5 class="fw-bold mb-4" style="color: var(--brand-navy);">Current Workload</h5>
+            
+            @if (!currentAssignments.Any())
+            {
+                <div class="text-center p-5 rounded" style="background-color: #F8FAFC; border: 2px dashed #E2E8F0;">
+                    <i class="bi bi-inbox text-muted" style="font-size: 2.5rem;"></i>
+                    <p class="mt-2 text-muted fw-semibold">No courses assigned for the active semester.</p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="uni-table w-100">
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Course Title</th>
+                                <th>Units</th>
+                                <th>Role</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var assignment in currentAssignments)
+                            {
+                                <tr>
+                                    <td class="fw-bold" style="color: var(--brand-navy);">@assignment.Course?.Code</td>
+                                    <td>@assignment.Course?.Title</td>
+                                    <td><span class="badge bg-light text-dark border">@assignment.Course?.CreditUnits Units</span></td>
+                                    <td>
+                                        @if (assignment.IsPrimaryLecturer)
+                                        {
+                                            <span class="text-success" style="font-size: 0.85rem;"><i class="bi bi-star-fill me-1"></i> Primary</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted" style="font-size: 0.85rem;">Assistant</span>
+                                        }
+                                    </td>
+                                    <td class="text-end">
+                                        <form asp-action="RemoveAssignment" method="post" onsubmit="return confirm('Are you sure you want to remove this course from their workload?');">
+                                            <input type="hidden" name="assignmentId" value="@assignment.Id" />
+                                            <input type="hidden" name="lecturerId" value="@Model.LecturerProfile.Id" />
+                                            <button type="submit" class="btn btn-sm btn-light border text-danger shadow-sm" title="Remove Course">
+                                                <i class="bi bi-trash3"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>

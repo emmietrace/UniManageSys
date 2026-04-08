@@ -1,0 +1,38 @@
+﻿@model UniManageSys.ViewModels.GradebookViewModel
+
+<div class="d-flex justify-content-between align-items-center mb-4 mt-3">
+    <div>
+        <h2 class="fw-bold m-0" style="color: var(--brand-navy);">Class Roster: @Model.Assignment.Course?.Code</h2>
+        <p class="text-muted">Total Enrolled: @Model.RegisteredStudents.Count Students</p>
+    </div>
+    <div class="gap-2 d-flex">
+        <a asp-action="MyClasses" class="btn btn-light border">Back</a>
+        <a asp-action="Gradebook" asp-route-id="@Model.Assignment.Id" class="btn btn-dark shadow-sm">
+            <i class="bi bi-pencil-square me-1"></i> Open Gradebook
+        </a>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm p-4" style="border-radius: 16px;">
+    <table class="uni-table w-100">
+        <thead>
+            <tr>
+                <th>Matric Number</th>
+                <th>Student Name</th>
+                <th>Level</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var reg in Model.RegisteredStudents)
+            {
+                <tr>
+                    <td class="fw-bold">@reg.Student?.MatriculationNumber</td>
+                    <td>@reg.Student?.User?.FullName</td>
+                    <td>@reg.Student?.CurrentLevel</td>
+                    <td><span class="badge bg-success">Verified</span></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

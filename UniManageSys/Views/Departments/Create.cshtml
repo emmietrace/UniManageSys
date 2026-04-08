@@ -1,0 +1,35 @@
+﻿@model UniManageSys.Models.Department
+
+<div class="d-flex justify-content-between align-items-center mb-4 mt-3">
+    <h2 class="fw-bold m-0" style="color: var(--brand-navy);">Add Department</h2>
+    <a asp-action="Index" class="btn btn-outline-secondary px-3">Cancel</a>
+</div>
+
+<div class="card border-0 shadow-sm p-4" style="border-radius: 16px; max-width: 700px;">
+    <form asp-action="Create" method="post">
+        <div asp-validation-summary="All" class="alert alert-danger shadow-sm" style="display: @(ViewData.ModelState.IsValid ? "none" : "block")"></div>
+
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label asp-for="Code" class="form-label text-muted fw-bold small text-uppercase">Dept Code</label>
+                <input asp-for="Code" class="form-control" placeholder="e.g. BFN" required />
+            </div>
+
+            <div class="col-md-8">
+                <label asp-for="Name" class="form-label text-muted fw-bold small text-uppercase">Department Name</label>
+                <input asp-for="Name" class="form-control" placeholder="e.g. Banking and Finance" required />
+            </div>
+
+            <div class="col-12 mt-3">
+                <label asp-for="FacultyId" class="form-label text-muted fw-bold small text-uppercase">Faculty / College</label>
+                <select asp-for="FacultyId" class="form-select" asp-items="ViewBag.Faculties" required>
+                    <option value="">-- Select Faculty --</option>
+                </select>
+            </div>
+        </div>
+
+        <button type="submit" class="btn shadow-sm py-2 w-100 mt-4" style="background-color: var(--brand-navy); color: white; border-radius: 8px;">
+            <i class="bi bi-save me-2"></i> Save Department
+        </button>
+    </form>
+</div>

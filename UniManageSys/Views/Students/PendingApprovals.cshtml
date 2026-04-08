@@ -1,0 +1,33 @@
+﻿@model IEnumerable<UniManageSys.Models.CourseRegistration>
+
+<div class="card border-0 shadow-sm p-4" style="border-radius: 16px;">
+    <h4 class="fw-bold mb-4" style="color: var(--brand-navy);">Pending Course Approvals</h4>
+    <table class="uni-table w-100">
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Course</th>
+                <th>Units</th>
+                <th>Date Submitted</th>
+                <th class="text-end">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Student?.User?.FullName <br /> <small>@item.Student?.MatriculationNumber</small></td>
+                    <td>@item.Course?.Code - @item.Course?.Title</td>
+                    <td>@item.Course?.CreditUnits</td>
+                    <td>@item.RegistrationDate.ToShortDateString()</td>
+                    <td class="text-end">
+                        <form asp-action="ApproveRegistration" method="post">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button type="submit" class="btn btn-sm btn-success">Approve</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,83 @@
+﻿@model UniManageSys.ViewModels.TakeAttendanceViewModel
+@using UniManageSys.Enums
+
+<div class="d-flex justify-content-between align-items-end mb-4 mt-3">
+    <div>
+        <h2 class="fw-bold mb-1" style="color: var(--brand-navy);">Take Attendance</h2>
+        <p class="text-muted mb-0">@Model.CourseCode - @Model.CourseTitle</p>
+    </div>
+</div>
+
+<form asp-action="Mark" method="post">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger shadow-sm"></div>
+    <input type="hidden" asp-for="CourseAssignmentId" />
+    <input type="hidden" asp-for="CourseCode" />
+    <input type="hidden" asp-for="CourseTitle" />
+
+    <div class="card border-0 shadow-sm p-4 mb-4" style="border-radius: 16px;">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label asp-for="SessionDate" class="form-label text-muted fw-bold small text-uppercase">Class Date</label>
+                <input asp-for="SessionDate" type="date" class="form-control" required />
+            </div>
+            <div class="col-md-8">
+                <label asp-for="TopicTaught" class="form-label text-muted fw-bold small text-uppercase">Topic Taught (Optional)</label>
+                <input asp-for="TopicTaught" class="form-control" placeholder="e.g., Introduction to Neural Networks" />
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm p-4" style="border-radius: 16px;">
+        <table class="uni-table w-100">
+            <thead style="background-color: #F8FAFC;">
+                <tr>
+                    <th style="width: 5%;">#</th>
+                    <th style="width: 20%;">Matric Number</th>
+                    <th style="width: 35%;">Student Name</th>
+                    <th style="width: 40%;">Attendance Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Students.Count == 0)
+                {
+                    <tr><td colspan="4" class="text-center text-muted p-4">No students are currently registered for this course.</td></tr>
+                }
+                
+                @for (int i = 0; i < Model.Students.Count; i++)
+                {
+                    <tr>
+                        <td class="text-muted">@(i + 1)</td>
+                        <td class="fw-bold">
+                            @Model.Students[i].MatricNumber
+                            <input type="hidden" asp-for="Students[i].StudentId" />
+                            <input type="hidden" asp-for="Students[i].MatricNumber" />
+                            <input type="hidden" asp-for="Students[i].FullName" />
+                        </td>
+                        <td>@Model.Students[i].FullName</td>
+                        <td>
+                            <div class="btn-group w-100 shadow-sm" role="group">
+                                <input type="radio" class="btn-check" asp-for="Students[i].Status" value="@AttendanceStatus.Present" id="present_@i" autocomplete="off">
+                                    <label class="btn btn-outline-success" for="present_@i"><i class="bi bi-check-circle me-1"></i> Present</label>
+
+                                    <input type="radio" class="btn-check" asp-for="Students[i].Status" value="@AttendanceStatus.Absent" id="absent_@i" autocomplete="off">
+                                        <label class="btn btn-outline-danger" for="absent_@i"><i class="bi bi-x-circle me-1"></i> Absent</label>
+
+                                        <input type="radio" class="btn-check" asp-for="Students[i].Status" value="@AttendanceStatus.Excused" id="excused_@i" autocomplete="off">
+                                            <label class="btn btn-outline-warning" for="excused_@i"><i class="bi bi-envelope-paper me-1"></i> Excused</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    @if (Model.Students.Count > 0)
+                    {
+                        <div class="mt-4 text-end">
+                            <button type="submit" class="btn px-5 py-2 shadow-sm" style="background-color: var(--brand-navy); color: white; border-radius: 8px;">
+                                <i class="bi bi-save2 me-2"></i> Save Attendance Record
+                            </button>
+                        </div>
+                    }
+                </div>
+            </form>

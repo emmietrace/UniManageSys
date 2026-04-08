@@ -1,0 +1,199 @@
+﻿@model UniManageSys.ViewModels.StudentDashboardViewModel
+
+@{
+    ViewData["Title"] = "Student Portal";
+    
+    // Calculate progress for credit load dynamically based on your ViewModel!
+    int creditPercentage = Model.MaxCredits > 0
+        ? (int)Math.Round((double)Model.TotalRegisteredCredits / Model.MaxCredits * 100)
+        : 0;
+        
+    string creditColor = creditPercentage > 90 ? "bg-danger" : creditPercentage > 75 ? "bg-warning" : "bg-success";
+}
+
+<div class="d-flex justify-content-between align-items-end mb-4 mt-3">
+    <div>
+        <h2 class="fw-bold mb-1" style="color: var(--brand-navy); letter-spacing: -0.5px;">Welcome back, @Model.StudentProfile.User.FirstName!</h2>
+        <p class="text-muted mb-0" style="font-size: 0.95rem;">@Model.CurrentSemester.AcademicYear.Name - @Model.CurrentSemester.Name</p>
+    </div>
+    <div class="text-end d-flex gap-2">
+        <span class="badge bg-light text-dark border p-2 shadow-sm">Matric: @Model.StudentProfile.MatriculationNumber</span>
+        <span class="badge bg-light text-dark border p-2 shadow-sm">Level: @Model.StudentProfile.CurrentLevel</span>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4 mb-5">
+    
+    <div class="col">
+        <div class="card border-0 shadow-sm h-100" style="border-radius: 16px;">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <p class="text-muted fw-bold small text-uppercase mb-1" style="letter-spacing: 0.05em;">Registered Courses</p>
+                        <h2 class="fw-bold mb-0" style="color: var(--brand-navy);">@Model.CurrentRegistrations.Count</h2>
+                    </div>
+                    <div class="p-2 rounded" style="background-color: rgba(15, 23, 42, 0.05); color: var(--brand-navy);">
+                        <i class="bi bi-journal-bookmark-fill fs-4"></i>
+                    </div>
+                </div>
+                <a asp-controller="Registration" asp-action="Portal" class="text-decoration-none small fw-bold" style="color: var(--brand-navy);">View Details &rarr;</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card border-0 shadow-sm h-100" style="border-radius: 16px;">
+            <div class="card-body p-4 d-flex flex-column justify-content-between">
+                <div>
+                    <div class="d-flex justify-content-between align-items-start mb-1">
+                        <p class="text-muted fw-bold small text-uppercase mb-0" style="letter-spacing: 0.05em;">Credit Load</p>
+                        <i class="bi bi-bar-chart-fill" style="color: var(--brand-gold);"></i>
+                    </div>
+                    <div class="d-flex align-items-baseline gap-1 mb-2">
+                        <h2 class="fw-bold mb-0" style="color: var(--brand-navy);">@Model.TotalRegisteredCredits</h2>
+                        <span class="text-muted fw-bold">/ @Model.MaxCredits</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="progress" style="height: 6px; background-color: #f1f5f9; border-radius: 3px;">
+                        <div class="progress-bar @creditColor" role="progressbar" style="width: @creditPercentage%; border-radius: 3px;"></div>
+                    </div>
+                    <div class="text-end mt-1">
+                        <span class="small fw-bold text-muted">@creditPercentage% Full</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card border-0 shadow-sm h-100" style="border-radius: 16px;">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <p class="text-muted fw-bold small text-uppercase mb-1" style="letter-spacing: 0.05em;">Standing</p>
+                        <h3 class="fw-bold mb-0" style="color: #10B981;">Good</h3>
+                    </div>
+                    <div class="p-2 rounded" style="background-color: rgba(16, 185, 129, 0.1); color: #10B981;">
+                        <i class="bi bi-check-circle-fill fs-4"></i>
+                    </div>
+                </div>
+                <div class="small fw-bold text-muted">
+                    CGPA: Updates at end of term
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card border-0 shadow-sm h-100" style="border-radius: 16px;">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="pe-2">
+                        <p class="text-muted fw-bold small text-uppercase mb-1" style="letter-spacing: 0.05em;">Programme</p>
+                        <h6 class="fw-bold mb-0" style="color: var(--brand-navy); line-height: 1.4;">@Model.StudentProfile.Programme.Name</h6>
+                    </div>
+                    <div class="p-2 rounded flex-shrink-0" style="background-color: rgba(139, 92, 246, 0.1); color: #8B5CF6;">
+                        <i class="bi bi-mortarboard-fill fs-4"></i>
+                    </div>
+                </div>
+                <div class="small text-muted">
+                    Dept: <span class="fw-bold">@Model.StudentProfile.Programme.Department?.Code</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row g-4 mb-5">
+    
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm p-4 h-100" style="border-radius: 16px;">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="fw-bold mb-0" style="color: var(--brand-navy);">
+                    <i class="bi bi-calendar3 me-2 text-muted"></i> Today's Classes
+                </h5>
+                <a href="#" class="btn btn-sm btn-outline-secondary" style="border-radius: 6px;">Full Timetable</a>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead style="background-color: #F8FAFC;">
+                        <tr>
+                            <th class="text-muted small fw-bold border-0 rounded-start ps-3">TIME</th>
+                            <th class="text-muted small fw-bold border-0">COURSE</th>
+                            <th class="text-muted small fw-bold border-0 rounded-end pe-3">VENUE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.TodaysClasses.Any())
+                        {
+                            @foreach (var cls in Model.TodaysClasses)
+                            {
+                                <tr>
+                                    <td class="ps-3 fw-bold" style="color: var(--brand-gold);">
+                                        @cls.StartTime.ToString(@"hh\:mm") - @cls.EndTime.ToString(@"hh\:mm")
+                                    </td>
+                                    <td>
+                                        <div class="fw-bold" style="color: var(--brand-navy);">@cls.Course?.Code</div>
+                                        <div class="small text-muted">@cls.Course?.Title</div>
+                                    </td>
+                                    <td class="pe-3">
+                                        <span class="badge bg-light text-dark border"><i class="bi bi-geo-alt-fill text-danger me-1"></i> @cls.Venue?.Name</span>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="3" class="text-center text-muted py-5 border-0">
+                                    <div class="mb-3"><i class="bi bi-emoji-sunglasses fs-1 text-muted opacity-50"></i></div>
+                                    <h6 class="fw-bold" style="color: var(--brand-navy);">No classes today!</h6>
+                                    <p class="small mb-0">Enjoy your free time or hit the library.</p>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm p-4 h-100" style="border-radius: 16px; background-color: var(--brand-navy); color: white;">
+            <h5 class="fw-bold mb-4 text-white">
+                <i class="bi bi-lightning-charge-fill me-2" style="color: var(--brand-gold);"></i> Quick Links
+            </h5>
+
+            <div class="d-flex flex-column gap-3">
+                <a asp-controller="Registration" asp-action="Portal" class="btn text-start p-3 border-0 d-flex justify-content-between align-items-center shadow-sm" style="background-color: rgba(255,255,255,0.05); border-radius: 12px; color: white;">
+                    <div>
+                        <div class="fw-bold text-white">Course Portal</div>
+                        <div class="small text-white-50">Add/Drop courses</div>
+                    </div>
+                    <i class="bi bi-journal-plus" style="color: var(--brand-gold);"></i>
+                </a>
+
+                <a asp-controller="Results" asp-action="MyTranscripts" class="btn text-start p-3 border-0 d-flex justify-content-between align-items-center shadow-sm" style="background-color: rgba(255,255,255,0.05); border-radius: 12px; color: white;">
+                    <div>
+                        <div class="fw-bold text-white">Academic Record</div>
+                        <div class="small text-white-50">View grades and transcript</div>
+                    </div>
+                    <i class="bi bi-award-fill" style="color: var(--brand-gold);"></i>
+                </a>
+
+                @* <a href="#" class="btn text-start p-3 border-0 d-flex justify-content-between align-items-center shadow-sm" style="background-color: rgba(255,255,255,0.05); border-radius: 12px; color: white;">
+                    <div>
+                        <div class="fw-bold text-white">Fee Payment</div>
+                        <div class="small text-white-50">View invoices and receipts</div>
+                    </div>
+                    <i class="bi bi-credit-card-fill" style="color: var(--brand-gold);"></i>
+                </a> *@
+            </div>
+        </div>
+    </div>
+
+</div>

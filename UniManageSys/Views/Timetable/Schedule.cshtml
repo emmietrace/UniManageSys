@@ -1,0 +1,91 @@
+﻿@model UniManageSys.Models.TimetableEvent
+
+@{
+    ViewData["Title"] = "Master Scheduling";
+    var activeSemester = ViewBag.ActiveSemester as UniManageSys.Models.Semester;
+}
+
+<div class="d-flex justify-content-between align-items-end mb-4 mt-3">
+    <div>
+        <h2 class="fw-bold mb-1" style="color: var(--brand-navy);">Schedule Class</h2>
+        <p class="text-muted mb-0">Active Term: @activeSemester?.AcademicYear?.Name - @activeSemester?.Name</p>
+    </div>
+</div>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible shadow-sm" style="border-radius: 8px;">
+        <i class="bi bi-shield-x me-2"></i> @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible shadow-sm" style="border-radius: 8px; border-left: 5px solid #10B981;">
+        <i class="bi bi-calendar-check me-2"></i> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm p-4" style="border-radius: 16px; background-color: var(--card-bg);">
+            <form asp-action="Schedule" method="post">
+                <div class="row g-4">
+                    
+                    <div class="col-md-4">
+                        <label asp-for="CourseId" class="form-label text-muted small fw-bold text-uppercase">Course</label>
+                        <select asp-for="CourseId" class="form-select" asp-items="ViewBag.Courses" required>
+                            <option value="">-- Select Course --</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="LecturerId" class="form-label text-muted small fw-bold text-uppercase">Lecturer</label>
+                        <select asp-for="LecturerId" class="form-select" asp-items="ViewBag.Lecturers" required>
+                            <option value="">-- Select Lecturer --</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="VenueId" class="form-label text-muted small fw-bold text-uppercase">Venue</label>
+                        <select asp-for="VenueId" class="form-select" asp-items="ViewBag.Venues" required>
+                            <option value="">-- Select Venue --</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4 mt-4">
+                        <label asp-for="Day" class="form-label text-muted small fw-bold text-uppercase">Day of Week</label>
+                        <select asp-for="Day" class="form-select" asp-items="Html.GetEnumSelectList<DayOfWeek>()" required>
+                            <option value="">-- Select Day --</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mt-4">
+                        <label asp-for="StartTime" class="form-label text-muted small fw-bold text-uppercase">Start Time</label>
+                        <input asp-for="StartTime" type="time" class="form-control" required />
+                    </div>
+                    <div class="col-md-4 mt-4">
+                        <label asp-for="EndTime" class="form-label text-muted small fw-bold text-uppercase">End Time</label>
+                        <input asp-for="EndTime" type="time" class="form-control" required />
+                    </div>
+
+                    <div class="col-12 mt-5">
+                        <button type="submit" class="btn w-100 shadow-sm py-2" style="background-color: var(--brand-navy); color: white; border-radius: 8px; font-weight: 500;">
+                            <i class="bi bi-calendar-plus me-2"></i> Book Schedule
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div class="col-lg-4 mt-4 mt-lg-0">
+        <div class="card border-0 shadow-sm p-4 h-100" style="border-radius: 16px; background-color: #F8FAFC;">
+            <h6 class="fw-bold mb-3" style="color: var(--brand-navy);"><i class="bi bi-shield-check text-success me-2"></i> Conflict Engine Active</h6>
+            <p class="text-muted small mb-4">The system will automatically prevent overlapping schedules. It checks for:</p>
+            <ul class="text-muted small ps-3">
+                <li class="mb-2"><strong>Venue Clashes:</strong> Prevents two courses from booking the same room at the same time.</li>
+                <li class="mb-2"><strong>Lecturer Clashes:</strong> Prevents assigning a lecturer to two different venues simultaneously.</li>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,44 @@
+﻿@model UniManageSys.ViewModels.TranscriptViewModel
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card border-0 shadow-sm p-5" style="border-radius: 20px; background: white;">
+            <div class="d-flex justify-content-between align-items-center mb-5">
+                <div>
+                    <h2 class="fw-bold" style="color: var(--brand-navy);">Academic Transcript</h2>
+                    <p class="text-muted">Official Student Record - @Model.Student.MatriculationNumber</p>
+                </div>
+                <div class="text-end">
+                    <h1 class="fw-bold" style="color: var(--brand-gold);">@Model.CGPA.ToString("0.00")</h1>
+                    <p class="small text-uppercase tracking-wider fw-bold">Current CGPA</p>
+                </div>
+            </div>
+
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Course Code</th>
+                        <th>Course Title</th>
+                        <th>Units</th>
+                        <th>Score</th>
+                        <th>Grade</th>
+                        <th>Points</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.AcademicHistory)
+                    {
+                        <tr>
+                            <td class="fw-bold">@item.Course?.Code</td>
+                            <td>@item.Course?.Title</td>
+                            <td>@item.Course?.CreditUnits</td>
+                            <td>@(item.Result?.TotalScore.ToString() ?? "N/A")</td>
+                            <td><span class="badge @(item.Result?.Grade == "F" ? "bg-danger" : "bg-success")">@item.Result?.Grade</span></td>
+                            <td>@item.Result?.GradePoint</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

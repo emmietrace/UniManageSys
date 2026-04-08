@@ -1,0 +1,217 @@
+﻿@{
+    ViewData["Title"] = "Welcome to UniSystem";
+    Layout = null; 
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Enterprise Academic Management</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --brand-navy: #0f172a;
+            --brand-gold: #F59E0B;
+        }
+        html,body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: #F8FAFC;
+            overflow-x: hidden;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+   
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Stops horizontal shake */
+    
+            /* Hide scrollbar for Firefox */
+            scrollbar-width: none !important;
+    
+            /* Hide scrollbar for IE and Edge */
+            -ms-overflow-style: none !important;
+    
+            /* Optional: Smooth scrolling for the "Learn More" link */
+            scroll-behavior: smooth;
+        }
+        /* 2. Target the Webkit engine (Chrome, Safari, new Edge) */
+        html::-webkit-scrollbar, 
+        body::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+
+        /* 3. Extra precaution for the main wrapper */
+        .container-fluid {
+            overflow: hidden;
+        }
+        .split-left {
+            background-color: var(--brand-navy);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .split-right {
+            background-color: #f1f5f9;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid p-0">
+        <div class="row g-0">
+            
+            <div class="col-lg-6 split-left p-4 p-md-5">
+                
+                <div class="d-flex align-items-center mb-auto pt-2">
+                    <div style="width: 45px; height: 45px; border-radius: 10px; background-color: var(--brand-gold); display: flex; align-items: center; justify-content: center; margin-right: 15px;">
+                        <i class="bi bi-mortarboard-fill" style="color: var(--brand-navy); font-size: 1.5rem;"></i>
+                    </div>
+                    <div>
+                        <h4 class="fw-bold mb-0 text-white" style="letter-spacing: -0.5px; line-height: 1;">UniSystem</h4>
+                        <span style="color: var(--brand-gold); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em;">ENTERPRISE EDITION</span>
+                    </div>
+                </div>
+
+                <div class="my-auto py-5 pe-xl-5">
+                    <h1 class="display-4 fw-bold mb-4" style="line-height: 1.15; letter-spacing: -1px;">
+                        The Next Generation of <br />
+                        <span style="color: var(--brand-gold);">Academic Management.</span>
+                    </h1>
+                    
+                    <p class="mb-5" style="color: #94A3B8; font-size: 1.15rem; max-width: 90%; line-height: 1.6;">
+                        A unified platform built for modern institutions. Seamlessly handle course registration, real-time attendance tracking, and comprehensive administration from a single dashboard.
+                    </p>
+                    
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="/Identity/Account/Login" class="btn btn-lg shadow-sm" style="background-color: var(--brand-gold); color: var(--brand-navy); font-weight: 700; border-radius: 8px; padding: 0.85rem 2.5rem;">
+                            <i class="bi bi-person-fill-lock me-2"></i> Access Portal
+                        </a>
+                        <a href="#features" class="btn btn-lg btn-outline-light" style="border-radius: 8px; padding: 0.85rem 2.5rem;">
+                            Learn More
+                        </a>
+                    </div>
+                </div>
+
+                <div class="mt-auto pb-2">
+                    <p class="text-white-50 small mb-0">&copy; @DateTime.Now.Year UniSystem Technologies. All rights reserved.</p>
+                </div>
+            </div>
+
+            <div class="col-lg-6 split-right d-none d-lg-flex p-5">
+                
+                <div class="position-relative w-100 shadow-lg" style="max-width: 550px; background-color: white; border-radius: 24px; padding: 2.5rem; border: 1px solid white;">
+                    
+                    <div style="position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; background-color: var(--brand-gold); opacity: 0.15; border-radius: 50%; z-index: 0;"></div>
+                    <div style="position: absolute; bottom: -40px; left: -40px; width: 200px; height: 200px; background-color: var(--brand-navy); opacity: 0.05; border-radius: 50%; z-index: 0;"></div>
+                    
+                    <div class="position-relative" style="z-index: 1;">
+                        <div class="d-flex justify-content-between align-items-center mb-5">
+                            <h5 class="fw-bold mb-0" style="color: var(--brand-navy);">Live Overview</h5>
+                            <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill border border-success border-opacity-25">System Active</span>
+                        </div>
+
+                        <div class="row g-4">
+                            <div class="col-6">
+                                <div class="p-4 rounded-4" style="background-color: #f8fafc; border: 1px solid #f1f5f9;">
+                                    <i class="bi bi-people-fill fs-3 mb-2 d-block" style="color: var(--brand-navy);"></i>
+                                    <h3 class="fw-bold mb-1" style="color: var(--brand-navy);">4,209</h3>
+                                    <p class="text-muted small mb-0 fw-bold text-uppercase" style="font-size: 0.75rem;">Active Students</p>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-4 rounded-4" style="background-color: #f8fafc; border: 1px solid #f1f5f9;">
+                                    <i class="bi bi-journal-check fs-3 mb-2 d-block" style="color: var(--brand-gold);"></i>
+                                    <h3 class="fw-bold mb-1" style="color: var(--brand-navy);">184</h3>
+                                    <p class="text-muted small mb-0 fw-bold text-uppercase" style="font-size: 0.75rem;">Courses Listed</p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12">
+                                <div class="p-4 rounded-4 mt-2 shadow-sm" style="background-color: var(--brand-navy); color: white;">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="fw-bold">Registration Progress</span>
+                                        <span class="text-white-50 small">85%</span>
+                                    </div>
+                                    <div class="progress" style="height: 8px; background-color: rgba(255,255,255,0.1); border-radius: 4px;">
+                                        <div class="progress-bar" role="progressbar" style="width: 85%; background-color: var(--brand-gold); border-radius: 4px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 mt-4 d-flex align-items-end justify-content-between gap-2" style="height: 80px; padding: 0 10px;">
+                                <div class="rounded-top" style="background-color: #e2e8f0; width: 14%; height: 35%;"></div>
+                                <div class="rounded-top" style="background-color: #cbd5e1; width: 14%; height: 50%;"></div>
+                                <div class="rounded-top" style="background-color: var(--brand-gold); width: 14%; height: 85%;"></div>
+                                <div class="rounded-top" style="background-color: var(--brand-navy); width: 14%; height: 100%;"></div>
+                                <div class="rounded-top" style="background-color: #e2e8f0; width: 14%; height: 40%;"></div>
+                                <div class="rounded-top" style="background-color: var(--brand-gold); width: 14%; height: 65%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="features" class="container py-5 my-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold" style="color: var(--brand-navy);">Core Capabilities</h2>
+            <p class="text-muted">Designed for students, built for administrators.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 p-4" style="border-radius: 16px; background-color: white;">
+                    <div class="mb-3">
+                        <div class="d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px; border-radius: 12px; background-color: rgba(15, 23, 42, 0.05); color: var(--brand-navy);">
+                            <i class="bi bi-journal-text fs-3"></i>
+                        </div>
+                    </div>
+                    <h5 class="fw-bold" style="color: var(--brand-navy);">Smart Registration</h5>
+                    <p class="text-muted mb-0">Automated prerequisite checking, credit load management, and HOD approval workflows.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 p-4" style="border-radius: 16px; background-color: white;">
+                    <div class="mb-3">
+                        <div class="d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px; border-radius: 12px; background-color: rgba(15, 23, 42, 0.05); color: var(--brand-navy);">
+                            <i class="bi bi-calendar-week fs-3"></i>
+                        </div>
+                    </div>
+                    <h5 class="fw-bold" style="color: var(--brand-navy);">Dynamic Timetables</h5>
+                    <p class="text-muted mb-0">Conflict-free scheduling, venue allocation, and real-time updates for all faculties.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 p-4" style="border-radius: 16px; background-color: white;">
+                    <div class="mb-3">
+                        <div class="d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px; border-radius: 12px; background-color: rgba(15, 23, 42, 0.05); color: var(--brand-navy);">
+                            <i class="bi bi-shield-check fs-3"></i>
+                        </div>
+                    </div>
+                    <h5 class="fw-bold" style="color: var(--brand-navy);">Enterprise Security</h5>
+                    <p class="text-muted mb-0">Role-based access control, secure password hashing, and strict data isolation for departments.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

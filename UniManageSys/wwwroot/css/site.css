@@ -1,0 +1,322 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    /* Royal Academic Palette */
+    --brand-navy: #0F172A; /* Deep sidebar background */
+    --brand-navy-light: #1E293B; /* Sidebar hover state */
+    --brand-gold: #F59E0B; /* Active accent */
+    --bg-light: #F8FAFC; /* Main content background */
+    --text-main: #334155; /* Primary text */
+    --text-muted: #64748B; /* Secondary text */
+    --card-bg: #FFFFFF;
+    /* Status Badges */
+    --status-active-bg: #DCFCE7;
+    --status-active-text: #166534;
+    --status-probation-bg: #FFEDD5;
+    --status-probation-text: #9A3412;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-main);
+    margin: 0;
+    overflow-x: hidden;
+}
+
+/* --- The Layout Shell --- */
+.app-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 260px;
+    background-color: var(--brand-navy);
+    color: white;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+}
+
+.sidebar-header {
+    padding: 2rem 1.5rem;
+}
+
+.sidebar-brand {
+    color: var(--brand-gold);
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin: 0;
+}
+
+.sidebar-subtitle {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.sidebar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+}
+
+.nav-item {
+    margin-bottom: 0.25rem;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.85rem 1.5rem;
+    color: #94A3B8;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border-left: 4px solid transparent;
+}
+
+    .nav-link i {
+        margin-right: 0.75rem;
+        font-size: 1.1rem;
+    }
+
+    .nav-link:hover {
+        background-color: var(--brand-navy-light);
+        color: white;
+    }
+
+    /* The Gold Accent for Active Page */
+    .nav-link.active {
+        background-color: var(--brand-navy-light);
+        color: white;
+        border-left-color: var(--brand-gold);
+    }
+
+/* Main Content Area */
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background-color: var(--bg-light);
+}
+
+.page-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--brand-navy);
+    margin: 0;
+}
+
+.content-wrapper {
+    padding: 0 2rem 2rem 2rem;
+}
+
+/* --- UI Components --- */
+.kpi-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border: 1px solid #E2E8F0;
+    position: relative;
+    overflow: hidden;
+}
+
+    /* Colored Bottom Borders for KPIs */
+    .kpi-card::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 1.5rem;
+        width: 40px;
+        height: 4px;
+        border-radius: 2px;
+    }
+
+.kpi-yellow::after {
+    background-color: var(--brand-gold);
+}
+
+.kpi-blue::after {
+    background-color: #3B82F6;
+}
+
+.kpi-green::after {
+    background-color: #10B981;
+}
+
+.kpi-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--brand-navy);
+    margin-bottom: 0.25rem;
+}
+
+.kpi-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+/* Enterprise Table */
+.uni-table {
+    width: 100%;
+    background: transparent;
+}
+
+    .uni-table th {
+        color: var(--text-muted);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 1rem;
+        border-bottom: 1px solid #E2E8F0;
+        font-weight: 600;
+    }
+
+    .uni-table td {
+        padding: 1rem;
+        font-size: 0.95rem;
+        color: var(--text-main);
+        border-bottom: 1px solid #F1F5F9;
+        vertical-align: middle;
+    }
+
+    .uni-table tbody tr:hover {
+        background-color: #F8FAFC;
+    }
+
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-active {
+    background-color: var(--status-active-bg);
+    color: var(--status-active-text);
+}
+
+.badge-probation {
+    background-color: var(--status-probation-bg);
+    color: var(--status-probation-text);
+}
+
+/* User Avatar */
+.avatar-circle {
+    width: 40px;
+    height: 40px;
+    background-color: var(--brand-navy);
+    color: var(--brand-gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+/* --- Modern Dashboard Card Styling --- */
+.uni-stat-card {
+    border-radius: 12px;
+    background: #ffffff;
+    border: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden; /* Important for the bottom bar */
+    position: relative;
+}
+
+    /* Base style for the colored bar at the bottom */
+    .uni-stat-card .accent-bar {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 6px;
+        border-radius: 0 0 12px 12px;
+    }
+
+/* Specific Accent Colors matching your reference image */
+.accent-orange {
+    background-color: #F97316;
+}
+/* Accent 1 */
+.accent-blue {
+    background-color: #3B82F6;
+}
+/* Accent 2 */
+.accent-green {
+    background-color: #10B981;
+}
+/* Accent 3 */
+.accent-purple {
+    background-color: #8B5CF6;
+}
+/* Alternate */
+.accent-red {
+    background-color: #EF4444;
+}
+/* Alerts */
+
+/* Text sizing matching the reference image */
+.uni-stat-card .stat-label {
+    font-weight: bold;
+    font-size: 0.8rem;
+    color: #6B7280; /* text-muted */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.uni-stat-card .stat-value {
+    font-weight: 800;
+    font-size: 2.2rem;
+    color: var(--brand-navy);
+}
+/* --- LIQUID GLASS SCROLLBARS --- */
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 26, 51, 0.15) transparent; /* Uses a faint tint of your Brand Navy */
+}
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+    width: 8px; /* Vertical scrollbar width */
+    height: 8px; /* Horizontal scrollbar height */
+}
+
+::-webkit-scrollbar-track {
+    background: transparent; /* Makes the background completely invisible */
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 26, 51, 0.15); /* Soft, semi-transparent glass effect */
+    border-radius: 10px; /* Smooth rounded edges */
+    border: 2px solid transparent; /* Creates a tiny invisible gap around the thumb */
+    background-clip: padding-box; /* Forces the background to stay inside the border */
+}
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 26, 51, 0.35); /* Darkens smoothly when you interact with it */
+        background-clip: padding-box;
+    }

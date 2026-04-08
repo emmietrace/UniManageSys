@@ -1,0 +1,137 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Secure Login";
+    // MAGIC LINE: This completely removes the sidebar and top navigation!
+    Layout = null; 
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - UniSystem Enterprise</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --brand-navy: #0f172a;
+            --brand-gold: #F59E0B;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: #F8FAFC;
+            overflow-x: hidden;
+        }
+        .split-left {
+            background-color: var(--brand-navy);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .split-right {
+            background-color: #f1f5f9;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .form-control:focus {
+            border-color: var(--brand-gold);
+            box-shadow: 0 0 0 0.25rem rgba(245, 158, 11, 0.25);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid p-0">
+        <div class="row g-0">
+            
+            <div class="col-lg-5 split-left p-5 d-none d-lg-flex">
+                
+                <a href="/" class="text-decoration-none d-flex align-items-center mb-auto">
+                    <div style="width: 40px; height: 40px; border-radius: 8px; background-color: var(--brand-gold); display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+                        <i class="bi bi-mortarboard-fill" style="color: var(--brand-navy); font-size: 1.2rem;"></i>
+                    </div>
+                    <div>
+                        <h4 class="fw-bold mb-0 text-white" style="letter-spacing: -0.5px; line-height: 1;">UniSystem</h4>
+                    </div>
+                </a>
+
+                <div class="my-auto pe-xl-4">
+                    <span class="badge mb-3 px-3 py-2" style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); letter-spacing: 0.1em;">ENTERPRISE EDITION</span>
+                    <h1 class="display-5 fw-bold mb-4" style="line-height: 1.2;">
+                        Welcome back to your <span style="color: var(--brand-gold);">Academic Portal.</span>
+                    </h1>
+                    <p style="color: #94A3B8; font-size: 1.1rem; line-height: 1.6;">
+                        Securely access your dashboard to manage registrations, view timetables, and handle administrative duties.
+                    </p>
+                </div>
+
+                <div class="mt-auto">
+                    <p class="text-white-50 small mb-0"><i class="bi bi-shield-lock-fill me-1"></i> Secured by ASP.NET Core Identity</p>
+                </div>
+            </div>
+
+            <div class="col-lg-7 split-right p-4 p-md-5">
+                <div class="w-100" style="max-width: 450px;">
+                    
+                    <div class="d-lg-none text-center mb-5">
+                        <div class="d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px; border-radius: 12px; background-color: var(--brand-gold);">
+                            <i class="bi bi-mortarboard-fill" style="color: var(--brand-navy); font-size: 2rem;"></i>
+                        </div>
+                        <h2 class="fw-bold text-dark">UniSystem</h2>
+                    </div>
+
+                    <div class="card border-0 shadow-lg p-4 p-md-5" style="border-radius: 20px; background-color: white;">
+                        <div class="mb-4 text-center">
+                            <h3 class="fw-bold mb-1" style="color: var(--brand-navy);">Account Login</h3>
+                            <p class="text-muted small">Enter your credentials to continue.</p>
+                        </div>
+
+                        <form id="account" method="post">
+                            <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small" role="alert"></div>
+                            
+                            <div class="form-floating mb-4">
+                                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@unisystem.edu" style="border-radius: 8px; border: 1px solid #cbd5e1;" />
+                                <label asp-for="Input.Email" class="text-muted"><i class="bi bi-envelope me-2"></i>Email Address</label>
+                                <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                            </div>
+                            
+                            <div class="form-floating mb-4">
+                                <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" style="border-radius: 8px; border: 1px solid #cbd5e1;" />
+                                <label asp-for="Input.Password" class="text-muted"><i class="bi bi-lock me-2"></i>Password</label>
+                                <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center mb-5">
+                                <div class="form-check">
+                                    <input class="form-check-input" asp-for="Input.RememberMe" id="rememberMe" style="cursor: pointer;" />
+                                    <label class="form-check-label text-muted small" asp-for="Input.RememberMe" for="rememberMe" style="cursor: pointer;">
+                                        @Html.DisplayNameFor(m => m.Input.RememberMe)
+                                    </label>
+                                </div>
+                                <a id="forgot-password" asp-page="./ForgotPassword" class="text-decoration-none fw-bold" style="color: var(--brand-navy); font-size: 0.85rem;">Forgot Password?</a>
+                            </div>
+                            
+                            <button id="login-submit" type="submit" class="btn w-100 py-3 shadow-sm" style="background-color: var(--brand-navy); color: white; border-radius: 8px; font-weight: 600; font-size: 1.1rem;">
+                                Secure Login <i class="bi bi-arrow-right ms-2"></i>
+                            </button>
+                        </form>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <partial name="_ValidationScriptsPartial" />
+</body>
+</html>

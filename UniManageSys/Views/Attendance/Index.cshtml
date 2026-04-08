@@ -1,0 +1,53 @@
+﻿@model IEnumerable<UniManageSys.Models.CourseAssignment>
+
+@{
+    ViewData["Title"] = "Class Attendance";
+    var activeSemester = ViewBag.ActiveSemester as UniManageSys.Models.Semester;
+}
+
+<div class="d-flex justify-content-between align-items-end mb-4 mt-3">
+    <div>
+        <h2 class="fw-bold mb-1" style="color: var(--brand-navy);">Class Registers</h2>
+        <p class="text-muted mb-0">Active Term: @activeSemester?.Name</p>
+    </div>
+</div>
+
+<div class="row g-4">
+    @if (!Model.Any())
+    {
+        <div class="col-12">
+            <div class="card border-0 shadow-sm p-5 text-center" style="border-radius: 16px; background-color: #F8FAFC;">
+                <i class="bi bi-folder-x text-muted mb-3" style="font-size: 3rem;"></i>
+                <h4 class="fw-bold" style="color: var(--brand-navy);">No Classes Assigned</h4>
+                <p class="text-muted">There are currently no courses assigned for this semester. Please contact the Admin or HOD.</p>
+            </div>
+        </div>
+    }
+
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100" style="border-radius: 12px; border-top: 5px solid var(--brand-navy) !important;">
+                <div class="card-body p-4">
+                    <span class="badge bg-light text-dark border mb-2">@item.Course?.Code</span>
+                    <h5 class="fw-bold mb-3" style="color: var(--brand-navy);">@item.Course?.Title</h5>
+                    
+                    <div class="d-flex align-items-center text-muted small mb-4">
+                        <i class="bi bi-person-video3 me-2 text-primary"></i>
+                        @item.Lecturer?.User?.FullName
+                    </div>
+
+                    <div class="d-flex gap-2 mt-4">
+                        <a asp-action="Mark" asp-route-assignmentId="@item.Id" class="btn flex-grow-1 shadow-sm py-2" style="background-color: var(--brand-navy); color: white; border-radius: 8px;">
+                            <i class="bi bi-clipboard-check me-2"></i> Take Attendance
+                        </a>
+    
+                        <a asp-action="Report" asp-route-assignmentId="@item.Id" class="btn btn-outline-secondary shadow-sm px-3 py-2" style="border-radius: 8px;" title="View Report">
+                            <i class="bi bi-graph-up"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

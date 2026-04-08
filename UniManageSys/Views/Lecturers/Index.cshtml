@@ -1,0 +1,124 @@
+﻿@model IEnumerable<UniManageSys.Models.Lecturer>
+@using System.Text.RegularExpressions
+
+@{
+    ViewData["Title"] = "Staff Directory";
+
+    // A tiny helper function to add spaces to our Enum names (e.g., "SeniorLecturer" -> "Senior Lecturer")
+    string FormatRank(string rankName)
+    {
+        return Regex.Replace(rankName, "([a-z])([A-Z])", "$1 $2");
+    }
+}
+
+<div class="d-flex justify-content-between align-items-end mb-4 mt-3">
+    <div>
+        <h2 class="fw-bold mb-1" style="color: var(--brand-navy);">Staff Directory</h2>
+        <p class="text-muted mb-0" style="font-size: 0.95rem;">Manage faculty profiles and department assignments.</p>
+    </div>
+    <a asp-action="Onboard" class="btn px-4 shadow-sm" style="background-color: var(--brand-navy); color: white; border-radius: 8px; font-weight: 500;">
+        <i class="bi bi-person-plus-fill me-2"></i> Onboard Faculty
+    </a>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert" style="border-radius: 8px; border-left: 5px solid #10B981;">
+        <i class="bi bi-check-circle-fill me-2"></i> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="card border-0 shadow-sm p-4" style="border-radius: 16px; background-color: var(--card-bg);">
+    <div class="table-responsive">
+        <table class="uni-table w-100" id="staffTable">
+            <thead>
+                <tr>
+                    <th>Staff ID</th>
+                    <th>Faculty Member</th>
+                    <th>Department</th>
+                    <th>Academic Rank</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var lecturer in Model)
+                {
+                    <tr>
+                        <td class="fw-bold" style="color: var(--brand-navy);">
+                            @lecturer.StaffId
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="avatar-circle shadow-sm" style="width: 32px; height: 32px; font-size: 0.75rem; background-color: #1E293B; color: var(--brand-gold);">
+                                    @(lecturer.User?.FirstName?.Substring(0, 1))@(lecturer.User?.LastName?.Substring(0, 1))
+                                </div>
+                                <div>
+                                    <div class="fw-semibold" style="color: var(--text-main);">@lecturer.User?.FullName</div>
+                                    <div class="text-muted" style="font-size: 0.8rem;">@lecturer.User?.Email</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="text-muted" style="font-size: 0.9rem;">
+                            @lecturer.Department?.Name
+                        </td>
+                        <td>
+                            <span class="badge" style="background-color: rgba(245, 158, 11, 0.1); color: #B45309; border: 1px solid rgba(245, 158, 11, 0.3);">
+                                <i class="bi bi-mortarboard-fill me-1"></i> @FormatRank(lecturer.Rank.ToString())
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            <div class="d-flex justify-content-end align-items-center gap-1">
+                                @if (lecturer.Department?.HODId == lecturer.Id)
+                                {
+                                    <span class="badge bg-primary shadow-sm" style="padding: 0.6em 0.8em; border-radius: 6px;">
+                                        <i class="bi bi-shield-check"></i> HOD
+                                    </span>
+                                }
+                                else
+                                {
+                                    <form asp-action="AssignHOD" method="post" onsubmit="return confirm('Are you sure you want to appoint @lecturer.User?.FullName as HOD? This will grant them administrative privileges.');">
+                                        <input type="hidden" name="lecturerId" value="@lecturer.Id" />
+                                        <input type="hidden" name="departmentId" value="@lecturer.DepartmentId" />
+                                        <button type="submit" class="btn btn-sm btn-outline-primary border shadow-sm" title="Appoint as HOD">
+                                            <i class="bi bi-award"></i>
+                                        </button>
+                                    </form>
+                                }
+
+                                <button class="btn btn-sm btn-light border shadow-sm" title="View Profile">
+                                    <i class="bi bi-eye text-muted"></i>
+                                </button>
+                                
+                                <a asp-action="Workload" asp-route-id="@lecturer.Id" class="btn btn-sm btn-light border shadow-sm" title="Manage Workload">
+                                    <i class="bi bi-journal-bookmark" style="color: var(--brand-navy);"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    
+    <script>
+        $(document).ready(function () {
+        $('#staffTable').DataTable({
+        "pageLength": 10,
+        "language": {
+        "search": "",
+        "searchPlaceholder": "Search ID or name..."
+        },
+        "dom": '<"d-flex justify-content-between align-items-center mb-3"f l>rt<"d-flex justify-content-between align-items-center mt-3"i p>'
+        });
+            
+        $('.dataTables_filter input').addClass('form-control').css({'border-radius': '8px', 'border': '1px solid #E2E8F0'});
+        });
+    </script>
+}

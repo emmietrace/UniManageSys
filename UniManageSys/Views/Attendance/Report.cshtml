@@ -1,0 +1,71 @@
+﻿@model UniManageSys.ViewModels.AttendanceReportViewModel
+
+<div class="d-flex justify-content-between align-items-end mb-4 mt-3">
+    <div>
+        <h2 class="fw-bold mb-1" style="color: var(--brand-navy);">Attendance Report</h2>
+        <p class="text-muted mb-0">@Model.CourseCode - @Model.CourseTitle</p>
+    </div>
+    <div class="text-end">
+        <span class="badge bg-primary fs-6 p-2 shadow-sm">Total Classes Held: @Model.TotalClassesHeld</span>
+        <button class="btn btn-outline-secondary ms-2 shadow-sm" onclick="window.print()">
+            <i class="bi bi-printer me-2"></i> Print List
+        </button>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm p-4" style="border-radius: 16px;">
+    @if (Model.TotalClassesHeld == 0)
+    {
+        <div class="text-center p-5">
+            <i class="bi bi-calendar-x text-muted mb-3" style="font-size: 3rem;"></i>
+            <h5 class="fw-bold" style="color: var(--brand-navy);">No Data Available</h5>
+            <p class="text-muted">No attendance has been recorded for this course yet.</p>
+        </div>
+    }
+    else
+    {
+        <table class="uni-table w-100">
+            <thead style="background-color: #F8FAFC;">
+                <tr>
+                    <th>Matric Number</th>
+                    <th>Student Name</th>
+                    <th class="text-center">Classes Attended</th>
+                    <th class="text-center">Percentage</th>
+                    <th class="text-end">Exam Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var student in Model.StudentSummaries)
+                {
+                    <tr>
+                        <td class="fw-bold">@student.MatricNumber</td>
+                        <td>@student.FullName</td>
+                        <td class="text-center">@student.ClassesAttended / @Model.TotalClassesHeld</td>
+                        <td class="text-center fw-bold @(student.AttendancePercentage < 75 ? "text-danger" : "text-success")">
+                            @student.AttendancePercentage%
+                        </td>
+                        <td class="text-end">
+                            @if (student.IsEligibleForExam)
+                            {
+                                <span class="badge bg-success shadow-sm"><i class="bi bi-check-circle me-1"></i> Eligible</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger shadow-sm"><i class="bi bi-x-circle me-1"></i> Barred (&lt; 75%)</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<style>
+    /* Clean up the print view for official documentation */
+    @@media print {
+        .sidebar, .top-header, .btn-outline-secondary { display: none !important; }
+        .main-content { margin-left: 0 !important; width: 100% !important; padding: 0 !important; }
+        .card { box-shadow: none !important; border: 1px solid #ddd !important; }
+    }
+</style>
