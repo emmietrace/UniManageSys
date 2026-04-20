@@ -126,7 +126,44 @@
                             </button>
                         </form>
                     </div>
-                    
+
+                    <!-- Demo Accounts Quick Login Section -->
+                    <div class="mt-4 p-4 shadow-sm" style="background-color: white; border-radius: 20px; border: 1px solid #e2e8f0;">
+                        <h6 class="text-muted fw-bold mb-3 text-center" style="font-size: 0.85rem; letter-spacing: 1px;"><i class="bi bi-info-circle-fill me-1"></i> DEMO ACCOUNTS</h6>
+                        <div class="d-flex flex-wrap justify-content-center gap-2">
+                            <button type="button" class="btn btn-sm demo-login-btn" style="background-color: #f8fafc; border: 1px solid #cbd5e1; color: var(--brand-navy);" data-email="sysadmin@unisystem.edu" data-password="Admin@123">
+                                <i class="bi bi-shield-lock text-danger"></i> Admin
+                            </button>
+                            <button type="button" class="btn btn-sm demo-login-btn" style="background-color: #f8fafc; border: 1px solid #cbd5e1; color: var(--brand-navy);" data-email="registrar@unisystem.edu" data-password="Admin@123">
+                                <i class="bi bi-journal-check text-primary"></i> Registrar
+                            </button>
+                            <button type="button" class="btn btn-sm demo-login-btn" style="background-color: #f8fafc; border: 1px solid #cbd5e1; color: var(--brand-navy);" data-email="hod@unisystem.edu" data-password="Admin@123">
+                                <i class="bi bi-diagram-3 text-success"></i> HOD
+                            </button>
+                            <button type="button" class="btn btn-sm demo-login-btn" style="background-color: #f8fafc; border: 1px solid #cbd5e1; color: var(--brand-navy);" data-email="lecturer@unisystem.edu" data-password="Admin@123">
+                                <i class="bi bi-person-workspace text-info"></i> Lecturer
+                            </button>
+                            <button type="button" class="btn btn-sm demo-login-btn" style="background-color: #f8fafc; border: 1px solid #cbd5e1; color: var(--brand-navy);" data-email="student@unisystem.edu" data-password="Admin@123">
+                                <i class="bi bi-backpack text-warning"></i> Student
+                            </button>
+                        </div>
+                        <div class="text-center mt-3">
+                            <small class="text-muted">Click any role to autofill login details</small>
+                        </div>
+                    </div>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            var buttons = document.querySelectorAll('.demo-login-btn');
+                            buttons.forEach(function(btn) {
+                                btn.addEventListener('click', function() {
+                                    document.getElementById('Input_Email').value = this.getAttribute('data-email');
+                                    document.getElementById('Input_Password').value = this.getAttribute('data-password');
+                                });
+                            });
+                        });
+                    </script>
+
                 </div>
             </div>
         </div>
