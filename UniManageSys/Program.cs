@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using UniManageSys.Data;
 using UniManageSys.Models;
 
+try{
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -140,3 +141,10 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 app.Run();
+}
+catch (Exception ex)
+{
+    // This ensures that even a startup crash is caught and logged
+    File.WriteAllText("startup_error.txt", ex.ToString());
+    throw;
+}
