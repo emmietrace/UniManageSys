@@ -1,0 +1,34 @@
+name: Build and Deploy to MonsterASP
+
+on:
+  push:
+    branches:
+      - main  # Or 'master' depending on your default branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 🚚 Checkout code
+      uses: actions/checkout@v4
+
+    - name: ⚙️ Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x' # Use 8.0.x if you are on .NET 8
+
+    - name: 🛠️ Restore dependencies
+      run: dotnet restore
+
+    - name: 🏗️ Build and Publish
+      run: dotnet publish -c Release -o ./publish
+
+    - name: 🚀 Upload to MonsterASP via FTP
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./publish/
+        server-dir: /wwwroot/  # MonsterASP usually puts web files here
