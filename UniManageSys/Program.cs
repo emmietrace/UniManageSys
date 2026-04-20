@@ -82,6 +82,38 @@ using (var scope = app.Services.CreateScope())
             throw new Exception($"Failed to create second admin user: {errors}");
         }
     }
+
+    // --- Create Default Demo Accounts ---
+    var defaultAccounts = new List<(string Email, string Role, string FirstName, string LastName)>
+    {
+        ("registrar@unisystem.edu", "Registrar", "System", "Registrar"),
+        ("hod@unisystem.edu", "HOD", "System", "HOD"),
+        ("lecturer@unisystem.edu", "Lecturer", "System", "Lecturer"),
+        ("student@unisystem.edu", "Student", "System", "Student"),
+        ("finance@unisystem.edu", "FinanceOfficer", "System", "Finance"),
+        ("exam@unisystem.edu", "ExamOfficer", "System", "Exam")
+    };
+
+    foreach (var acc in defaultAccounts)
+    {
+        if (await userManager.FindByEmailAsync(acc.Email) == null)
+        {
+            var user = new ApplicationUser
+            {
+                UserName = acc.Email,
+                Email = acc.Email,
+                FirstName = acc.FirstName,
+                LastName = acc.LastName,
+                EmailConfirmed = true,
+                IsActive = true
+            };
+            var result = await userManager.CreateAsync(user, "Admin@123");
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(user, acc.Role);
+            }
+        }
+    }
 }
 
 // Configure the HTTP request pipeline.
