@@ -35,6 +35,9 @@ var app = builder.Build();
 // --- Role Seeding Block ---
 using (var scope = app.Services.CreateScope())
 {
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    await dbContext.Database.MigrateAsync();
+
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
@@ -140,4 +143,3 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 app.Run();
-
